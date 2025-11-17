@@ -115,7 +115,7 @@ int main (int argc, char* argv[]) {
     std::chrono::time_point<std::chrono::system_clock> end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     double T_Sekw = elapsed.count();
-    std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "\n";
+    std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "s\n";
 
     return 0;
 }

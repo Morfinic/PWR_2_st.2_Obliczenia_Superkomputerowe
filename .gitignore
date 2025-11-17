@@ -1,2 +1,4 @@
 .vscode
 bin
+cmake-build-debug
+cmake-build-debug-event-trace
