@@ -110,9 +110,11 @@ int main (int argc, char* argv[]) {
     // testStability(numItems, maxWeight, maxValue, capacity);
     // testPerformance();
 
-    std::chrono::time_point<std::chrono::system_clock> start = std::chrono::high_resolution_clock::now();
+//    std::chrono::time_point<std::chrono::system_clock>
+    auto start = std::chrono::high_resolution_clock::now();
     defaultRun(numItems, maxWeight, maxValue, capacity);
-    std::chrono::time_point<std::chrono::system_clock> end = std::chrono::high_resolution_clock::now();
+//    std::chrono::time_point<std::chrono::system_clock>
+    auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     double T_Sekw = elapsed.count();
     std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "s\n";

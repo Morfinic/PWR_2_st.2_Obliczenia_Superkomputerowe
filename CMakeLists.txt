@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.28.1)
 project(PWR_2_st.2_Obliczenia_Superkomputerowe)
 
 set(CMAKE_CXX_STANDARD 23)
