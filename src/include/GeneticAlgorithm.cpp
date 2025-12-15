@@ -1,4 +1,5 @@
 #include "GeneticAlgorithm.h"
+#include <omp.h>
 
 GeneticAlgorithm::GeneticAlgorithm(
     Knapsack& knapsack,
@@ -86,19 +87,20 @@ void GeneticAlgorithm::mutate(KnapsackGA::Solution& chromosome){
     }
 }
 
-std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bool verbose, bool log){
+std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bool verbose, bool log, bool isParallel){
     std::vector<KnapsackGA::Solution> population = this->generateInitialPopulation();
     KnapsackGA::Solution bestSolution;
     KnapsackGA::Solution bestLastGenSolution;
     int bestFitness = -1;
     std::vector<int> convergence;
 
+    #pragma omp parallel for if(isParallel)
     for (int generation = 0; generation < this->maxGenerations; generation++)
     {
         std::vector<int> fitnesses;
         int bestGenFitness = -1;
         KnapsackGA::Solution bestGenSolution;
-        
+
         for (auto &chromosome : population)
         {   
             int fitness = this->calculateFitness(chromosome);

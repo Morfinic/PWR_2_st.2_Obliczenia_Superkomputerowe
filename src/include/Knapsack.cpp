@@ -65,19 +65,19 @@ Knapsack Knapsack::generateRandom(int numItems, int maxWeight, int maxValue, int
 void Knapsack::printSolution(KnapsackGA::Solution& solution){
     auto [totalWeight, totalValue] = this->evaluate(solution);
 
-    std::cout << "Selected items: " << std::endl;
-    int count = 0;
-
-    for (size_t i = 0; i < solution.size(); i++)
-    {
-        if(!solution[i])
-            continue;
-        std:: cout << this -> items[i] << std::endl;
-        count++;
-    }
-    std::cout << std::endl;
-    std::cout << "Total items: " << count << std::endl;;
+//    std::cout << "Selected items: " << std::endl;
+//    int count = 0;
+//
+//    for (size_t i = 0; i < solution.size(); i++)
+//    {
+//        if(!solution[i])
+//            continue;
+//        std:: cout << this -> items[i] << std::endl;
+//        count++;
+//    }
+//    std::cout << std::endl;
+    std::cout << "Total items: " << solution.size() << std::endl;;
     std::cout << "Total weight: " << totalWeight << " / " << this -> capacity << std::endl;
     std::cout << "Total value: " << totalValue << std::endl;
-    std::cout << "----------------" << std::endl;
+    std::cout << "----------------\n\n";
 }

@@ -31,6 +31,6 @@ class GeneticAlgorithm{
             int tournamentSize = 5,
             int maxGenerations = 200
         );
-        std::pair<KnapsackGA::Solution, KnapsackGA::Solution> solve(bool verbose=true, bool log=false);
+        std::pair<KnapsackGA::Solution, KnapsackGA::Solution> solve(bool verbose=true, bool log=false, bool isParallel=false);
         int calculateFitness(KnapsackGA::Solution& chromosome);
 };
