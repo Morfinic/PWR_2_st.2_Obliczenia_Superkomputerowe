@@ -27,8 +27,6 @@ if(APPLE)
     set(OpenMP_omp_LIBRARY "${LIBOMP_PREFIX}/lib/libomp.dylib")
 endif()
 
-find_package(OpenMP REQUIRED)
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_executable(
     ${PROJECT_NAME} src/main.cpp
@@ -40,6 +38,8 @@ add_executable(
         src/include/Knapsack.cpp
         src/include/KnapsackGA.h
 )
+
+find_package(OpenMP REQUIRED)
 
 if(OpenMP_CXX_FOUND)
     target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX)
