@@ -3,6 +3,7 @@
 #include "include/GeneticAlgorithm.h"
 #include "include/Item.h"
 #include "include/Knapsack.h"
+#include <omp.h>
 
 void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool isParallel) {
     Knapsack knapsack = Knapsack::generateRandom(numItems, maxWeight, maxValue, capacity);
@@ -34,11 +35,16 @@ int main (int argc, char* argv[]) {
         capacity = std::stoi(argv[4]);
     }
 
-    auto start = std::chrono::high_resolution_clock::now();
+    // Ustawianie dostepnych threads dla OpenMP
+    int num_of_threads = omp_get_max_threads();
+    std::cout<< "Liczba rdzeni logicznych: " << num_of_threads << "\n\n";
+    omp_set_num_threads(num_of_threads);
 
+
+    auto start = std::chrono::high_resolution_clock::now();
     // Uruchamienia algorytmu
     defaultRun(numItems, maxWeight, maxValue, capacity, true);
-
+    // ----------------------
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     double T_Sekw = elapsed.count();
