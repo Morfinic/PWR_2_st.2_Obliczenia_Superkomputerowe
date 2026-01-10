@@ -77,8 +77,8 @@ int main (int argc, char* argv[]) {
 
     auto start = std::chrono::high_resolution_clock::now();
     // Uruchamienia algorytmu
-    // defaultRun(numItems, maxWeight, maxValue, capacity, true);
-    defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
+    defaultRun(numItems, maxWeight, maxValue, capacity, true);
+    // defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
     // ----------------------
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
