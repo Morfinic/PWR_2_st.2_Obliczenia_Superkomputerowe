@@ -11,15 +11,13 @@ void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool is
     auto [bestSolution, lastGenSolution] = solver.solve(false, false, isParallel);
     std::cout << "Best solution" << std::endl;
     knapsack.printSolution(bestSolution);
-    std::cout << "Last gen solution" << std::endl;
-    knapsack.printSolution(lastGenSolution);
 }
 
 int main (int argc, char* argv[]) {
-    int numItems = 320;
+    int numItems = 50;
     int maxWeight = 50;
     int maxValue = 100;
-    int capacity = 4000;
+    int capacity = 1000;
 
     std::vector<Item> items;
     if(argc > 1){

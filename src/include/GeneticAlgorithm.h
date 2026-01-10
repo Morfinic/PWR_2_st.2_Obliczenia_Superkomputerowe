@@ -26,10 +26,10 @@ class GeneticAlgorithm{
         public:
         GeneticAlgorithm(
             Knapsack& knapsack,
-            int populationSize = 100,
+            int populationSize = 1000,
             double mutationRate = 0.01,
             int tournamentSize = 5,
-            int maxGenerations = 200
+            int maxGenerations = 500
         );
         std::pair<KnapsackGA::Solution, KnapsackGA::Solution> solve(bool verbose=true, bool log=false, bool isParallel=false);
         int calculateFitness(KnapsackGA::Solution& chromosome);
