@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.28.1)
 project(PWR_2_st.2_Obliczenia_Superkomputerowe)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+project(${PROJECT_NAME} LANGUAGES CXX CUDA)
+set(CMAKE_CUDA_ARCHITECTURES 89)
+
+# Optymalizacja CUDA
+#set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 --use_fast_math")
 
 if(APPLE)
     find_program(BREW_PROG brew)
@@ -37,6 +44,8 @@ add_executable(
         src/include/Knapsack.h
         src/include/Knapsack.cpp
         src/include/KnapsackGA.h
+        src/include/GpuSolver.cu
+        src/include/GpuSolver.h
 )
 
 find_package(OpenMP REQUIRED)

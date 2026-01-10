@@ -4,6 +4,7 @@
 #include "include/Item.h"
 #include "include/Knapsack.h"
 #include <omp.h>
+#include "include/GpuSolver.h"
 
 void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool isParallel) {
     Knapsack knapsack = Knapsack::generateRandom(numItems, maxWeight, maxValue, capacity);
@@ -11,6 +12,41 @@ void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool is
     auto [bestSolution, lastGenSolution] = solver.solve(false, false, isParallel);
     std::cout << "Best solution" << std::endl;
     knapsack.printSolution(bestSolution);
+}
+
+void defaultRunCUDA(int numItems, int maxWeight, int maxValue, int capacity) {
+    Knapsack knapsack = Knapsack::generateRandom(numItems, maxWeight, maxValue, capacity);
+
+    std::vector<int> weights;
+    std::vector<int> values;
+
+    const auto& items = knapsack.getItems();
+    for(const auto& item : items) {
+        weights.push_back(item.weight);
+        values.push_back(item.value);
+    }
+
+    GpuResult res = GpuSolver::solveKnapsackGPU(
+        weights,
+        values,
+        capacity,
+        1000,
+        0.01,
+        5,
+        500
+    );
+
+    int finalWeight = 0;
+    for(size_t i = 0; i < res.bestChromosome.size(); i++) {
+        if(res.bestChromosome[i] == 1) {
+            finalWeight += weights[i];
+        }
+    }
+
+    std::cout << "Best solution" << std::endl;
+    std::cout << "Total items: " << numItems << std::endl;
+    std::cout << "Total weight: " << finalWeight << " / " << capacity << std::endl;
+    std::cout << "Total value: " << res.bestFitness << std::endl;
 }
 
 int main (int argc, char* argv[]) {
@@ -41,7 +77,8 @@ int main (int argc, char* argv[]) {
 
     auto start = std::chrono::high_resolution_clock::now();
     // Uruchamienia algorytmu
-    defaultRun(numItems, maxWeight, maxValue, capacity, true);
+    // defaultRun(numItems, maxWeight, maxValue, capacity, true);
+    defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
     // ----------------------
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
