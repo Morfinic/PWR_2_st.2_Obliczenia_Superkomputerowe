@@ -18,7 +18,7 @@ GeneticAlgorithm::GeneticAlgorithm(
 {};
 
 std::vector<KnapsackGA::Solution>GeneticAlgorithm::generateInitialPopulation(){
-    std::vector<KnapsackGA::Solution> population;
+    std::vector<KnapsackGA::Solution> population(this->populationSize);
     std::uniform_int_distribution<> boolDist(0, 1);
 
     for (int i = 0; i < this->populationSize; i++)
@@ -28,7 +28,7 @@ std::vector<KnapsackGA::Solution>GeneticAlgorithm::generateInitialPopulation(){
         {
             chromosome[j] = boolDist(this->generator);
         }
-        population.push_back(chromosome);
+        population[i] = chromosome;
     }
     
     return population;
@@ -100,7 +100,9 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
         int bestGenFitness = -1;
         KnapsackGA::Solution bestGenSolution;
 
-        #pragma omp parallel for if(isParallel)
+        // Tu można dać schedule(typ, chunk_size)
+        // np. schedule(static, 64)
+        #pragma omp parallel for schedule(static) if(isParallel)
         for (int i = 0; i < this->populationSize; ++i)
         {   
             int fitness = this->calculateFitness(population[i]);

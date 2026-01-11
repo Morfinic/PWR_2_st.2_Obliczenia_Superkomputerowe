@@ -74,7 +74,6 @@ int main (int argc, char* argv[]) {
     std::cout<< "Liczba rdzeni logicznych: " << num_of_threads << "\n\n";
     omp_set_num_threads(num_of_threads);
 
-
     auto start = std::chrono::high_resolution_clock::now();
     // Uruchamienia algorytmu
     defaultRun(numItems, maxWeight, maxValue, capacity, true);
