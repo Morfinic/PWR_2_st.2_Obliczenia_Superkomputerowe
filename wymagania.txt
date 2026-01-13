@@ -1,0 +1,19 @@
+- analiza obliczeniowa (czasowa) i pamieciowa (w mniejszym stopniu)
+- kod musi być zprofilowany
+    - zdiagnozowanie czy i gdzie sa bottlenecki
+    - przeanalizowac kod i sprawdzić czy zgodny jest z profilerem
+    - zrobić lepszą, poprawioną wersję kodu
+    - zawrzec efekty w notatce
+- testowanie
+    - testować złożoność obliczeniową i pamięciową (w zależności od parametrów)
+        - można zrobić jakiś wykres
+    - rozmiar problemu (np. większa ilość parametrów, wiekszy plecak)
+    - badanie zasobów komunikacji (ile czasu w systemie zostało użyte na komunikację)
+    - porównanie wykresu z założeniami/analizą teoretyczną
+- obliczenia rozproszone
+    - do profilowania rozproszonego narysować diagram gantta (np. workerów, przerwy pomiędzy)
+        - policzyć jakąś prostą statystykę (np. licz 3h na 4 workerów, 12h roboczych, ile z nich zostało poświęcone na pracę,
+          a ilę na czekanie
+    - na gpu, analiza np. czy warto nie dodac lokalnego cachowania, manualne wykorzystanie shared memory
+- instrukcje profesrosa (SIMD)
+- dyskusja
