@@ -160,6 +160,11 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
                 newPopulation[i+1] = child2;
             }
         }
+        // Tworzenie nowej Generacji
+        // O(P * T * N)
+        // Na konieć O(P * N)
+        //     T jest małe i zasadniczo nie będzie się zmieniać,
+        //     a P i N są znacząco większe
 
         population = newPopulation;
         bestLastGenSolution = bestGenSolution;
@@ -168,3 +173,8 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
 
     return {bestSolution, bestLastGenSolution};
 }
+
+// Solve
+// G (P * N + P + P * N)
+// Złożoność obliczeniowa O(G * P * N)
+// Złożoność pamięciowa
