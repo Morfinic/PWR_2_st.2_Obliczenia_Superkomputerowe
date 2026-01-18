@@ -129,8 +129,6 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
 
         #pragma omp parallel for if(isParallel)
         for(int i = 1; i < this->populationSize; i += 2){
-            std::mt19937 localGen(std::random_device{}() + i);
-
             KnapsackGA::Solution parent1 = this->tournamentSelection(population);
             KnapsackGA::Solution parent2 = this->tournamentSelection(population);
 
