@@ -64,7 +64,7 @@ int main (int argc, char* argv[]) {
 
     auto start = std::chrono::high_resolution_clock::now();
     // Uruchamienia algorytmu
-    defaultRun(numItems, maxWeight, maxValue, capacity, true);
+    defaultRun(numItems, maxWeight, maxValue, capacity, false);
     //defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
     // ----------------------
     auto end = std::chrono::high_resolution_clock::now();
