@@ -19,7 +19,7 @@ class GeneticAlgorithm{
         std::mt19937 generator;
 
         std::vector<KnapsackGA::Solution> generateInitialPopulation();
-        KnapsackGA::Solution tournamentSelection(std::vector<KnapsackGA::Solution>& population);
+        KnapsackGA::Solution tournamentSelection(std::vector<KnapsackGA::Solution>& population, std::vector<int> fitnesses);
         std::pair<KnapsackGA::Solution, KnapsackGA::Solution> crossover(KnapsackGA::Solution& parent1, KnapsackGA::Solution& parent2);
         void mutate(KnapsackGA::Solution& chromosome);
         

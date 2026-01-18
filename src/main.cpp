@@ -6,12 +6,14 @@
 #include <omp.h>
 #include "include/GpuSolver.h"
 
-void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool isParallel) {
+void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool isParallel, bool verbose) {
     Knapsack knapsack = Knapsack::generateRandom(numItems, maxWeight, maxValue, capacity);
     GeneticAlgorithm solver(knapsack);
     auto [bestSolution, lastGenSolution] = solver.solve(false, false, isParallel);
-    std::cout << "Best solution" << std::endl;
-//    knapsack.printSolution(bestSolution);
+    if (verbose){
+        std::cout << "Best solution" << std::endl;
+        knapsack.printSolution(bestSolution);
+    }
 }
 
 //void defaultRunCUDA(int numItems, int maxWeight, int maxValue, int capacity) {
@@ -60,17 +62,19 @@ int main (int argc, char* argv[]) {
     // Ustawianie dostepnych threads dla OpenMP
     int num_of_threads = omp_get_max_threads();
     std::cout<< "Liczba rdzeni logicznych: " << num_of_threads << "\n\n";
-    omp_set_num_threads(4);
+    omp_set_num_threads(13);
 
-    auto start = std::chrono::high_resolution_clock::now();
-    // Uruchamienia algorytmu
-    defaultRun(numItems, maxWeight, maxValue, capacity, false);
-    //defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
-    // ----------------------
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    double T_Sekw = elapsed.count();
-    std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "s\n";
-
+    for (int i = 0 ; i < 1 ; i++) {
+        auto start = std::chrono::high_resolution_clock::now();
+        // Uruchamienia algorytmu
+        defaultRun(numItems, maxWeight, maxValue, capacity, false, true);
+        //defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
+        // ----------------------
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+        double T_Sekw = elapsed.count();
+        std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "s\n";
+        // std::cout << T_Sekw/1000000 << "\n";
+    }
     return 0;
 }
