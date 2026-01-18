@@ -61,20 +61,21 @@ int main (int argc, char* argv[]) {
 
     // Ustawianie dostepnych threads dla OpenMP
     int num_of_threads = omp_get_max_threads();
-    std::cout<< "Liczba rdzeni logicznych: " << num_of_threads << "\n\n";
-    omp_set_num_threads(13);
+    std::cout<< "Liczba rdzeni: " << num_of_threads << "\n";
+    int sel_num_thr = 14;
+    omp_set_num_threads(sel_num_thr);
+    std::cout<< "Liczba wybranych rdzeni: " << sel_num_thr << "\n\n";
 
-    for (int i = 0 ; i < 1 ; i++) {
-        auto start = std::chrono::high_resolution_clock::now();
-        // Uruchamienia algorytmu
-        defaultRun(numItems, maxWeight, maxValue, capacity, false, true);
-        //defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
-        // ----------------------
-        auto end = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        double T_Sekw = elapsed.count();
-        std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "s\n";
-        // std::cout << T_Sekw/1000000 << "\n";
-    }
+    auto start = std::chrono::high_resolution_clock::now();
+    // Uruchamienia algorytmu
+    defaultRun(numItems, maxWeight, maxValue, capacity, true, false);
+    //defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
+    // ----------------------
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    double T_Sekw = elapsed.count();
+    std::cout << "Czas trwania algorytmu: " << T_Sekw/1000000 << "s\n";
+    // std::cout << T_Sekw/1000000 << "\n";
+
     return 0;
 }
