@@ -59,7 +59,12 @@ KnapsackGA::Solution GeneticAlgorithm::tournamentSelection(std::vector<KnapsackG
     {
         int index = indexDist(this->generator);
         KnapsackGA::Solution chromosome = population[index];
-        int fitness = fitnesses[i];
+        // Wykorzystanie poprzednio policzonego fitness
+        // CHODZI GORZEJ
+        // int fitness = fitnesses[i];
+        // Wcześniejsza wersja
+        int fitness = calculateFitness(chromosome);
+
         if (fitness <= bestFitness)
             continue;
         bestFitness = fitness;
