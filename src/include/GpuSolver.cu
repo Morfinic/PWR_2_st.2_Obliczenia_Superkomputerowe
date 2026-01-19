@@ -179,7 +179,7 @@ GpuResult GpuSolver::solveKnapsackGPU(
     CHECK(cudaMemcpy(d_values, values.data(), itemsBytes, cudaMemcpyHostToDevice));
 
     // Konfiguracja siatki wątków
-    int threadsPerBlock = 256;
+    int threadsPerBlock = 64;
     int blocks = (populationSize + threadsPerBlock - 1) / threadsPerBlock;
 
     // Inicjalizacja ziarna i generatorów
