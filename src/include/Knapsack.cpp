@@ -35,8 +35,8 @@ KnapsackGA::KnapsackEvaluation Knapsack::evaluate(KnapsackGA::Solution& solution
 }
 
 Knapsack Knapsack::generateRandom(int numItems, int maxWeight, int maxValue, int capacity, bool fixed){
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    //std::random_device rd;
+    std::mt19937 gen(42);
     std::uniform_int_distribution<> weightDist(1, maxWeight);
     std::uniform_int_distribution<> valueDist(1, maxValue);
     int weight = 0;

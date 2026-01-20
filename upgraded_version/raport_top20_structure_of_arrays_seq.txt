@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: structure_of_arrays_seq
+Data: Tue Jan 20 12:05:05 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 39.74%     | 0x0000000100000050
+2    | |--35.62%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | [clone ._omp_fn.1]
+4    | |          | long)
+5    | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+6    | |          | long)@plt
+7    | |          | std::vector<bool, std::allocator<bool> >&)
+8    | |          | long)
+9    | 39.74%     | 0x000060947b698e10
+10   | |--35.62%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+11   | |          | [clone ._omp_fn.1]
+12   | |          | long)
+13   | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+14   | |          | long)@plt
+15   | |          | std::vector<bool, std::allocator<bool> >&)
+16   | |          | long)
+17   | 39.74%     | 0x000000c8000003e8
+18   | |--35.62%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+19   | |          | [clone ._omp_fn.1]
+20   | |          | long)
+21   | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+22   | |          | long)@plt
+23   | |          | std::vector<bool, std::allocator<bool> >&)

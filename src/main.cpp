@@ -51,8 +51,9 @@ void defaultRun(int numItems, int maxWeight, int maxValue, int capacity, bool is
 //    std::cout << "Total value: " << res.bestFitness << std::endl;
 //}
 
+// 3.58416s vs 1.20681s po zmianahc dla sekwencyjnego 0.361975s vs 0.347582s dla parallel
 int main (int argc, char* argv[]) {
-    int numItems = 50;
+    int numItems = 200;
     int maxWeight = 50;
     int maxValue = 100;
     int capacity = 1000;
@@ -68,7 +69,7 @@ int main (int argc, char* argv[]) {
 
     auto start = std::chrono::high_resolution_clock::now();
     // Uruchamienia algorytmu
-    defaultRun(numItems, maxWeight, maxValue, capacity, false, true);
+    defaultRun(numItems, maxWeight, maxValue, capacity, true, true);
     //defaultRunCUDA(numItems, maxWeight, maxValue, capacity);
     // ----------------------
     auto end = std::chrono::high_resolution_clock::now();

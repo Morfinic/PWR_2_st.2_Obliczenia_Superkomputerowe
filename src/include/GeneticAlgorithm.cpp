@@ -15,7 +15,19 @@ GeneticAlgorithm::GeneticAlgorithm(
     tournamentSize(tournamentSize),
     maxGenerations(maxGenerations),
     generator(std::random_device{}())
-{};
+{
+    // Optymalizacja: Kopiujemy dane do prostych wektorów int, 
+    // aby calculateFitness nie skakało po pamięci.
+    this->capacity = knapsack.getCapacity();
+    auto items = knapsack.getItems();
+    this->itemWeights.reserve(items.size());
+    this->itemValues.reserve(items.size());
+
+    for(const auto& item : items) {
+        this->itemWeights.push_back(item.weight);
+        this->itemValues.push_back(item.value);
+    }
+};
 
 // G - Liczba generacji
 // P - Rozmiar populacji
@@ -23,7 +35,7 @@ GeneticAlgorithm::GeneticAlgorithm(
 // T - Rozmiar turnieju
 // k - liczba wątków procesora
 
-std::vector<KnapsackGA::Solution>GeneticAlgorithm::generateInitialPopulation(){
+std::vector<KnapsackGA::Solution> GeneticAlgorithm::generateInitialPopulation(){
     std::vector<KnapsackGA::Solution> population(this->populationSize);
     std::uniform_int_distribution<> boolDist(0, 1);
 
@@ -41,9 +53,19 @@ std::vector<KnapsackGA::Solution>GeneticAlgorithm::generateInitialPopulation(){
 }
 
 int GeneticAlgorithm::calculateFitness(KnapsackGA::Solution& chromosome){
-    auto [totalWeight, totalValue] = this->knapsack.evaluate(chromosome);
+    // Zoptymalizowana wersja: operuje na lokalnych wektorach int
+    int totalWeight = 0;
+    int totalValue = 0;
 
-    if(totalWeight > knapsack.getCapacity()){
+    for (int i = 0; i < this->chromosomeLength; i++)
+    {
+        if(chromosome[i]) {
+            totalWeight += this->itemWeights[i];
+            totalValue += this->itemValues[i];
+        }
+    }
+
+    if(totalWeight > this->capacity){
         return 0;
     }
 
@@ -51,94 +73,104 @@ int GeneticAlgorithm::calculateFitness(KnapsackGA::Solution& chromosome){
 }
 
 KnapsackGA::Solution GeneticAlgorithm::tournamentSelection(std::vector<KnapsackGA::Solution>& population, std::vector<int> fitnesses){
-    std::uniform_int_distribution<> indexDist(0, this->populationSize - 1);
-    KnapsackGA::Solution bestChromosome;
+    // Używamy thread_local na wszelki wypadek, to nie szkodzi wersji single-thread,
+    // a zabezpiecza przed błędami w przyszłości.
+    static thread_local std::mt19937 threadGen(std::random_device{}() + omp_get_thread_num());
+    std::uniform_int_distribution<> dist(0, this->populationSize - 1);
+    
     int bestFitness = -1;
+    int bestIndex = -1;
 
-    for (int i = 0; i < this->tournamentSize; i++)
-    {
-        int index = indexDist(this->generator);
-        KnapsackGA::Solution chromosome = population[index];
-        // Wykorzystanie poprzednio policzonego fitness
-        // CHODZI GORZEJ
-        // int fitness = fitnesses[i];
-        // Wcześniejsza wersja
-        int fitness = calculateFitness(chromosome);
-
-        if (fitness <= bestFitness)
-            continue;
-        bestFitness = fitness;
-        bestChromosome = chromosome;
+    for(int i = 0; i < this->tournamentSize; i++){
+        int index = dist(threadGen);
+        if(fitnesses[index] > bestFitness){
+            bestFitness = fitnesses[index];
+            bestIndex = index;
+        }
     }
-    return bestChromosome;
+    
+    return population[bestIndex];
 }
 
 std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::crossover(KnapsackGA::Solution& parent1, KnapsackGA::Solution& parent2){
-    std::uniform_int_distribution<> pointDist(1, this->chromosomeLength);
+    static thread_local std::mt19937 threadGen(std::random_device{}() + omp_get_thread_num());
+    std::uniform_int_distribution<> dist(0, this->chromosomeLength - 1);
+    int crossoverPoint = dist(threadGen);
 
-    int point = pointDist(this->generator);
     KnapsackGA::Solution child1 = parent1;
     KnapsackGA::Solution child2 = parent2;
 
-    for (int i = point; i < this->chromosomeLength; i++)
-    {
-        // std::swap(child1[i], child2[i]);
-        std::vector<bool>::swap(child1[i], child2[i]);
+    for(int i = crossoverPoint; i < this->chromosomeLength; i++){
+        child1[i] = parent2[i];
+        child2[i] = parent1[i];
     }
+
     return {child1, child2};
 }
 
 void GeneticAlgorithm::mutate(KnapsackGA::Solution& chromosome){
-    std::uniform_real_distribution<> probabilityDist(0.0, 1.0);
-    for (int i = 0; i < this->chromosomeLength; i++)
-    {
-        if(probabilityDist(this->generator) >= this->mutationRate)
-            continue;
-        chromosome[i] = !chromosome[i];
+    static thread_local std::mt19937 threadGen(std::random_device{}() + omp_get_thread_num());
+    std::uniform_real_distribution<> dist(0.0, 1.0);
+    
+    for(int i = 0; i < this->chromosomeLength; i++){
+        if(dist(threadGen) < this->mutationRate){
+            chromosome[i] = !chromosome[i];
+        }
     }
 }
 
 std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bool verbose, bool log, bool isParallel){
     std::vector<KnapsackGA::Solution> population = this->generateInitialPopulation();
-    KnapsackGA::Solution bestSolution;
-    KnapsackGA::Solution bestLastGenSolution;
-    int bestFitness = -1;
+    
+    // Alokujemy raz, używamy wielokrotnie
+    std::vector<KnapsackGA::Solution> newPopulation(this->populationSize);
+    std::vector<int> fitnesses(this->populationSize);
     std::vector<int> convergence;
 
-    // Działa G razy
-    for (int generation = 0; generation < this->maxGenerations; generation++)
-    {
-        std::vector<int> fitnesses(this->populationSize);
+    // Inicjalizujemy czymkolwiek poprawnym, żeby uniknąć pustych wektorów
+    KnapsackGA::Solution bestSolution = population[0];
+    KnapsackGA::Solution bestLastGenSolution = population[0];
+    int bestFitness = -1;
+
+    for(int g = 0; g < this->maxGenerations; g++){
+        
+        // ZMIANA: -1 zamiast 0. Jeśli wszyscy mają fitness 0 (przepełnienie),
+        // to i tak musimy kogoś wybrać jako "najlepszego z generacji", 
+        // żeby nie przypisać pustego wektora.
         int bestGenFitness = -1;
-        KnapsackGA::Solution bestGenSolution;
+        
+        // Zabezpieczenie: domyślnie bierzemy pierwszego, żeby wektor nigdy nie był pusty
+        KnapsackGA::Solution bestGenSolution = population[0];
 
-        // Tu można dać schedule(typ, chunk_size)
-        // np. schedule(static, 64)
-        // Działa P * N
-        #pragma omp parallel for schedule(static) if(isParallel)
-        for (int i = 0; i < this->populationSize; ++i) // O(P)
-        {
-            int fitness = this->calculateFitness(population[i]); // O(N)
-            fitnesses[i] = fitness;
-        }
-
-        int bestGenIndex = -1;
-        // Działa P razy
-        for (int i = 0; i < this->populationSize; ++i) {
-            if (fitnesses[i] > bestGenFitness) {
-                bestGenFitness = fitnesses[i];
-                bestGenIndex = i;
+        #pragma omp parallel for if(isParallel)
+        for(int i = 0; i < this->populationSize; i++){
+            fitnesses[i] = this->calculateFitness(population[i]);
+            
+            // Critical jest potrzebny tylko przy włączonym parallel
+            if (isParallel) {
+                if(fitnesses[i] > bestGenFitness){
+                    #pragma omp critical
+                    {
+                        if(fitnesses[i] > bestGenFitness){
+                            bestGenFitness = fitnesses[i];
+                            bestGenSolution = population[i];
+                        }
+                    }
+                }
+            } else {
+                // Wersja Single Thread (bez narzutu critical)
+                if(fitnesses[i] > bestGenFitness){
+                    bestGenFitness = fitnesses[i];
+                    bestGenSolution = population[i];
+                }
             }
         }
-
-        bestGenSolution = population[bestGenIndex];
 
         if(bestGenFitness > bestFitness){
             bestFitness = bestGenFitness;
             bestSolution = bestGenSolution;
         }
 
-        std::vector<KnapsackGA::Solution> newPopulation(this->populationSize);
         newPopulation[0] = bestGenSolution;
 
         // Działa P/2 razy
@@ -153,7 +185,6 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
             // O(N)
             auto [child1, child2] = this->crossover(parent1, parent2);
 
-
             // N
             mutate(child1);
             // N
@@ -166,11 +197,7 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
             }
         }
         // Tworzenie nowej Generacji
-        // O(P * T * N)
-        // Na konieć O(P * N)
-        //     T jest małe i zasadniczo nie będzie się zmieniać,
-        //     a P i N są znacząco większe
-
+        
         population = newPopulation;
         bestLastGenSolution = bestGenSolution;
         convergence.push_back(bestGenFitness);
@@ -178,8 +205,3 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
 
     return {bestSolution, bestLastGenSolution};
 }
-
-// Solve
-// G (P * N + P + P * N)
-// Złożoność obliczeniowa O(G * P * N)
-// Złożoność pamięciowa

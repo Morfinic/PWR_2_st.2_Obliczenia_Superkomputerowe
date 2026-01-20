@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: structure_of_arrays_parallel
+Data: Tue Jan 20 12:06:25 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 37.08%     | GeneticAlgorithm::mutate(std::vector<bool, std::allocator<bool> >&)
+2    | |          | |
+3    | |          | --0.10%--tick_nohz_highres_handler
+4    | |          | tick_sched_handle
+5    | |          | update_process_times
+6    | |          | |
+7    | |          | |--0.07%--scheduler_tick
+8    | |          | | |
+9    | |          | | --0.05%--task_tick_fair
+10   | |          | | |
+11   | |          | | --0.02%--update_load_avg
+12   | |          | | |
+13   | |          | | --0.01%--__update_load_avg_se
+14   | |          | |
+15   | |          | --0.01%--run_posix_cpu_timers
+16   | |          | >&)
+17   | |          | >&)
+18   | 33.35%     | 0x0000000100000050
+19   | |--27.04%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+20   | |          | |
+21   | |          | --0.06%--tick_sched_handle
+22   | |          | update_process_times
+23   | |          | |

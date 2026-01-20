@@ -18,6 +18,11 @@ class GeneticAlgorithm{
         int maxGenerations;
         std::mt19937 generator;
 
+        // Cache wag i wartości dla optymalizacji evaluate
+        std::vector<int> itemWeights;
+        std::vector<int> itemValues;
+        int capacity;
+
         std::vector<KnapsackGA::Solution> generateInitialPopulation();
         KnapsackGA::Solution tournamentSelection(std::vector<KnapsackGA::Solution>& population, std::vector<int> fitnesses);
         std::pair<KnapsackGA::Solution, KnapsackGA::Solution> crossover(KnapsackGA::Solution& parent1, KnapsackGA::Solution& parent2);
