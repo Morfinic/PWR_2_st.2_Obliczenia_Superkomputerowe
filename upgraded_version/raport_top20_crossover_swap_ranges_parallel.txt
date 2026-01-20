@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: crossover_swap_ranges_parallel
+Data: Tue Jan 20 01:27:09 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 58.07%     | 0x0000000100000050
+2    | |--45.16%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | |
+4    | |          | |--0.12%--__hrtimer_run_queues
+5    | |          | | tick_nohz_highres_handler
+6    | |          | | tick_sched_handle
+7    | |          | | update_process_times
+8    | |          | | |
+9    | |          | | |--0.11%--scheduler_tick
+10   | |          | | | |
+11   | |          | | | |--0.05%--task_tick_fair
+12   | |          | | | | |
+13   | |          | | | | |--0.02%--update_load_avg
+14   | |          | | | | |
+15   | |          | | | | --0.01%--update_curr
+16   | |          | | | | |
+17   | |          | | | | --0.01%--__calc_delta.constprop.0
+18   | |          | | | |
+19   | |          | | | |--0.02%--perf_event_task_tick
+20   | |          | | | | _raw_spin_lock
+21   | |          | | | |
+22   | |          | | | |--0.02%--update_rq_clock
+23   | |          | | | | sched_clock_cpu

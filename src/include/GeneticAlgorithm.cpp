@@ -1,5 +1,6 @@
 #include "GeneticAlgorithm.h"
 #include <omp.h>
+#include <algorithm>
 
 GeneticAlgorithm::GeneticAlgorithm(
     Knapsack& knapsack,
@@ -100,10 +101,7 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::crossove
     KnapsackGA::Solution child1 = parent1;
     KnapsackGA::Solution child2 = parent2;
 
-    for(int i = crossoverPoint; i < this->chromosomeLength; i++){
-        child1[i] = parent2[i];
-        child2[i] = parent1[i];
-    }
+    std::swap_ranges(child1.begin() + crossoverPoint, child1.end(), child2.begin() + crossoverPoint);
 
     return {child1, child2};
 }
@@ -169,7 +167,7 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
 
         newPopulation[0] = bestGenSolution;
 
-        // Pętla Ewolucji: P/2 iteracji
+        // Działa P/2 razy
         #pragma omp parallel for if(isParallel)
         for(int i = 1; i < this->populationSize; i += 2){
             // Selekcja 2 * O(T)

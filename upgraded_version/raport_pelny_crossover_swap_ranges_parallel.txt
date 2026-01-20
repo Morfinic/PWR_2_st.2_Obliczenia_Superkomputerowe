@@ -1,0 +1,421 @@
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 58.07%     | 0x0000000100000050
+2    | |--45.16%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | |
+4    | |          | |--0.12%--__hrtimer_run_queues
+5    | |          | | tick_nohz_highres_handler
+6    | |          | | tick_sched_handle
+7    | |          | | update_process_times
+8    | |          | | |
+9    | |          | | |--0.11%--scheduler_tick
+10   | |          | | | |
+11   | |          | | | |--0.05%--task_tick_fair
+12   | |          | | | | |
+13   | |          | | | | |--0.02%--update_load_avg
+14   | |          | | | | |
+15   | |          | | | | --0.01%--update_curr
+16   | |          | | | | |
+17   | |          | | | | --0.01%--__calc_delta.constprop.0
+18   | |          | | | |
+19   | |          | | | |--0.02%--perf_event_task_tick
+20   | |          | | | | _raw_spin_lock
+21   | |          | | | |
+22   | |          | | | |--0.02%--update_rq_clock
+23   | |          | | | | sched_clock_cpu
+24   | |          | | | | sched_clock
+25   | |          | | | | sched_clock_noinstr
+26   | |          | | | | native_sched_clock
+27   | |          | | | |
+28   | |          | | | --0.01%--update_cfs_group
+29   | |          | | |
+30   | |          | | --0.02%--rcu_pending
+31   | |          | |
+32   | |          | --0.02%--tick_program_event
+33   | |          | [clone ._omp_fn.1]
+34   | |          | |
+35   | |          | |--0.38%--_int_free_maybe_consolidate
+36   | |          | |
+37   | |          | --0.21%--_int_free_merge_chunk
+38   | |          | long)
+39   | |          | |
+40   | |          | |--0.83%--_int_malloc
+41   | |          | |
+42   | |          | |--0.13%--tcache_init.part.0
+43   | |          | | arena_get2.part.0
+44   | |          | | |
+45   | |          | | |--0.08%--__mprotect
+46   | |          | | | entry_SYSCALL_64_after_hwframe
+47   | |          | | | do_syscall_64
+48   | |          | | | x64_sys_call
+49   | |          | | | __x64_sys_mprotect
+50   | |          | | | do_mprotect_pkey
+51   | |          | | | down_write_killable
+52   | |          | | | rwsem_down_write_slowpath
+53   | |          | | | |
+54   | |          | | | --0.08%--rwsem_optimistic_spin
+55   | |          | | | osq_lock
+56   | |          | | |
+57   | |          | | |--0.03%--__munmap
+58   | |          | | | entry_SYSCALL_64_after_hwframe
+59   | |          | | | do_syscall_64
+60   | |          | | | x64_sys_call
+61   | |          | | | __x64_sys_munmap
+62   | |          | | | __vm_munmap
+63   | |          | | | |
+64   | |          | | | --0.02%--down_write_killable
+65   | |          | | | rwsem_down_write_slowpath
+66   | |          | | | rwsem_optimistic_spin
+67   | |          | | | |
+68   | |          | | | --0.02%--osq_lock
+69   | |          | | |
+70   | |          | | --0.02%--alloc_new_heap
+71   | |          | | asm_exc_page_fault
+72   | |          | | exc_page_fault
+73   | |          | | do_user_addr_fault
+74   | |          | | handle_mm_fault
+75   | |          | | __handle_mm_fault
+76   | |          | | handle_pte_fault
+77   | |          | | do_anonymous_page
+78   | |          | | |
+79   | |          | | --0.01%--__folio_throttle_swaprate
+80   | |          | | blk_cgroup_congested
+81   | |          | |
+82   | |          | |--0.02%--asm_sysvec_apic_timer_interrupt
+83   | |          | | sysvec_apic_timer_interrupt
+84   | |          | | irq_enter_rcu
+85   | |          | |
+86   | |          | --0.02%--alloc_perturb
+87   | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+88   | |          | std::vector<bool, std::allocator<bool> >&)
+89   | |          | long)
+90   | |          | long)@plt
+91   | |--0.10%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+92   | |--0.02%--std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+93   | 58.07%     | 0x000057ad05bd9e10
+94   | |--45.16%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+95   | |          | |
+96   | |          | |--0.12%--__hrtimer_run_queues
+97   | |          | | tick_nohz_highres_handler
+98   | |          | | tick_sched_handle
+99   | |          | | update_process_times
+100  | |          | | |
+101  | |          | | |--0.11%--scheduler_tick
+102  | |          | | | |
+103  | |          | | | |--0.05%--task_tick_fair
+104  | |          | | | | |
+105  | |          | | | | |--0.02%--update_load_avg
+106  | |          | | | | |
+107  | |          | | | | --0.01%--update_curr
+108  | |          | | | | |
+109  | |          | | | | --0.01%--__calc_delta.constprop.0
+110  | |          | | | |
+111  | |          | | | |--0.02%--perf_event_task_tick
+112  | |          | | | | _raw_spin_lock
+113  | |          | | | |
+114  | |          | | | |--0.02%--update_rq_clock
+115  | |          | | | | sched_clock_cpu
+116  | |          | | | | sched_clock
+117  | |          | | | | sched_clock_noinstr
+118  | |          | | | | native_sched_clock
+119  | |          | | | |
+120  | |          | | | --0.01%--update_cfs_group
+121  | |          | | |
+122  | |          | | --0.02%--rcu_pending
+123  | |          | |
+124  | |          | --0.02%--tick_program_event
+125  | |          | [clone ._omp_fn.1]
+126  | |          | |
+127  | |          | |--0.38%--_int_free_maybe_consolidate
+128  | |          | |
+129  | |          | --0.21%--_int_free_merge_chunk
+130  | |          | long)
+131  | |          | |
+132  | |          | |--0.83%--_int_malloc
+133  | |          | |
+134  | |          | |--0.13%--tcache_init.part.0
+135  | |          | | arena_get2.part.0
+136  | |          | | |
+137  | |          | | |--0.08%--__mprotect
+138  | |          | | | entry_SYSCALL_64_after_hwframe
+139  | |          | | | do_syscall_64
+140  | |          | | | x64_sys_call
+141  | |          | | | __x64_sys_mprotect
+142  | |          | | | do_mprotect_pkey
+143  | |          | | | down_write_killable
+144  | |          | | | rwsem_down_write_slowpath
+145  | |          | | | |
+146  | |          | | | --0.08%--rwsem_optimistic_spin
+147  | |          | | | osq_lock
+148  | |          | | |
+149  | |          | | |--0.03%--__munmap
+150  | |          | | | entry_SYSCALL_64_after_hwframe
+151  | |          | | | do_syscall_64
+152  | |          | | | x64_sys_call
+153  | |          | | | __x64_sys_munmap
+154  | |          | | | __vm_munmap
+155  | |          | | | |
+156  | |          | | | --0.02%--down_write_killable
+157  | |          | | | rwsem_down_write_slowpath
+158  | |          | | | rwsem_optimistic_spin
+159  | |          | | | |
+160  | |          | | | --0.02%--osq_lock
+161  | |          | | |
+162  | |          | | --0.02%--alloc_new_heap
+163  | |          | | asm_exc_page_fault
+164  | |          | | exc_page_fault
+165  | |          | | do_user_addr_fault
+166  | |          | | handle_mm_fault
+167  | |          | | __handle_mm_fault
+168  | |          | | handle_pte_fault
+169  | |          | | do_anonymous_page
+170  | |          | | |
+171  | |          | | --0.01%--__folio_throttle_swaprate
+172  | |          | | blk_cgroup_congested
+173  | |          | |
+174  | |          | |--0.02%--asm_sysvec_apic_timer_interrupt
+175  | |          | | sysvec_apic_timer_interrupt
+176  | |          | | irq_enter_rcu
+177  | |          | |
+178  | |          | --0.02%--alloc_perturb
+179  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+180  | |          | std::vector<bool, std::allocator<bool> >&)
+181  | |          | long)
+182  | |          | long)@plt
+183  | |--0.10%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+184  | |--0.02%--std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+185  | 58.07%     | 0x000000c8000003e8
+186  | |--45.16%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+187  | |          | |
+188  | |          | |--0.12%--__hrtimer_run_queues
+189  | |          | | tick_nohz_highres_handler
+190  | |          | | tick_sched_handle
+191  | |          | | update_process_times
+192  | |          | | |
+193  | |          | | |--0.11%--scheduler_tick
+194  | |          | | | |
+195  | |          | | | |--0.05%--task_tick_fair
+196  | |          | | | | |
+197  | |          | | | | |--0.02%--update_load_avg
+198  | |          | | | | |
+199  | |          | | | | --0.01%--update_curr
+200  | |          | | | | |
+201  | |          | | | | --0.01%--__calc_delta.constprop.0
+202  | |          | | | |
+203  | |          | | | |--0.02%--perf_event_task_tick
+204  | |          | | | | _raw_spin_lock
+205  | |          | | | |
+206  | |          | | | |--0.02%--update_rq_clock
+207  | |          | | | | sched_clock_cpu
+208  | |          | | | | sched_clock
+209  | |          | | | | sched_clock_noinstr
+210  | |          | | | | native_sched_clock
+211  | |          | | | |
+212  | |          | | | --0.01%--update_cfs_group
+213  | |          | | |
+214  | |          | | --0.02%--rcu_pending
+215  | |          | |
+216  | |          | --0.02%--tick_program_event
+217  | |          | [clone ._omp_fn.1]
+218  | |          | |
+219  | |          | |--0.38%--_int_free_maybe_consolidate
+220  | |          | |
+221  | |          | --0.21%--_int_free_merge_chunk
+222  | |          | long)
+223  | |          | |
+224  | |          | |--0.83%--_int_malloc
+225  | |          | |
+226  | |          | |--0.13%--tcache_init.part.0
+227  | |          | | arena_get2.part.0
+228  | |          | | |
+229  | |          | | |--0.08%--__mprotect
+230  | |          | | | entry_SYSCALL_64_after_hwframe
+231  | |          | | | do_syscall_64
+232  | |          | | | x64_sys_call
+233  | |          | | | __x64_sys_mprotect
+234  | |          | | | do_mprotect_pkey
+235  | |          | | | down_write_killable
+236  | |          | | | rwsem_down_write_slowpath
+237  | |          | | | |
+238  | |          | | | --0.08%--rwsem_optimistic_spin
+239  | |          | | | osq_lock
+240  | |          | | |
+241  | |          | | |--0.03%--__munmap
+242  | |          | | | entry_SYSCALL_64_after_hwframe
+243  | |          | | | do_syscall_64
+244  | |          | | | x64_sys_call
+245  | |          | | | __x64_sys_munmap
+246  | |          | | | __vm_munmap
+247  | |          | | | |
+248  | |          | | | --0.02%--down_write_killable
+249  | |          | | | rwsem_down_write_slowpath
+250  | |          | | | rwsem_optimistic_spin
+251  | |          | | | |
+252  | |          | | | --0.02%--osq_lock
+253  | |          | | |
+254  | |          | | --0.02%--alloc_new_heap
+255  | |          | | asm_exc_page_fault
+256  | |          | | exc_page_fault
+257  | |          | | do_user_addr_fault
+258  | |          | | handle_mm_fault
+259  | |          | | __handle_mm_fault
+260  | |          | | handle_pte_fault
+261  | |          | | do_anonymous_page
+262  | |          | | |
+263  | |          | | --0.01%--__folio_throttle_swaprate
+264  | |          | | blk_cgroup_congested
+265  | |          | |
+266  | |          | |--0.02%--asm_sysvec_apic_timer_interrupt
+267  | |          | | sysvec_apic_timer_interrupt
+268  | |          | | irq_enter_rcu
+269  | |          | |
+270  | |          | --0.02%--alloc_perturb
+271  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+272  | |          | std::vector<bool, std::allocator<bool> >&)
+273  | |          | long)
+274  | |          | long)@plt
+275  | |--0.10%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+276  | |--0.02%--std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+277  | 45.17%     | GeneticAlgorithm::solve(bool, bool, bool) [clone ._omp_fn.0]
+278  | |          | [clone ._omp_fn.0]
+279  | |--0.34%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+280  | |          | |
+281  | |          | |--0.12%--__hrtimer_run_queues
+282  | |          | | tick_nohz_highres_handler
+283  | |          | | tick_sched_handle
+284  | |          | | update_process_times
+285  | |          | | |
+286  | |          | | |--0.11%--scheduler_tick
+287  | |          | | | |
+288  | |          | | | |--0.05%--task_tick_fair
+289  | |          | | | | |
+290  | |          | | | | |--0.02%--update_load_avg
+291  | |          | | | | |
+292  | |          | | | | --0.01%--update_curr
+293  | |          | | | | |
+294  | |          | | | | --0.01%--__calc_delta.constprop.0
+295  | |          | | | |
+296  | |          | | | |--0.02%--perf_event_task_tick
+297  | |          | | | | _raw_spin_lock
+298  | |          | | | |
+299  | |          | | | |--0.02%--update_rq_clock
+300  | |          | | | | sched_clock_cpu
+301  | |          | | | | sched_clock
+302  | |          | | | | sched_clock_noinstr
+303  | |          | | | | native_sched_clock
+304  | |          | | | |
+305  | |          | | | --0.01%--update_cfs_group
+306  | |          | | |
+307  | |          | | --0.02%--rcu_pending
+308  | |          | |
+309  | |          | --0.02%--tick_program_event
+310  | 10.90%     | GeneticAlgorithm::crossover(std::vector<bool, std::allocator<bool> >&, std::vector<bool, std::allocator<bool> >&)
+311  | |--10.01%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+312  | |          | std::vector<bool, std::allocator<bool> >&)
+313  | |          | >&, std::vector<bool, std::allocator<bool> >&)
+314  | |          | bool) [clone ._omp_fn.1]
+315  | |          | std::vector<bool, std::allocator<bool> >&)
+316  | 3.24%      | GeneticAlgorithm::mutate(std::vector<bool, std::allocator<bool> >&)
+317  | 3.16%      | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, std::allocator<bool> >, std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+318  | |--1.66%--GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+319  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+320  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+321  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+322  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+323  | |          | [clone ._omp_fn.1]
+324  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+325  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+326  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+327  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+328  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+329  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+330  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+331  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+332  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+333  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+334  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+335  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+336  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+337  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+338  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+339  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+340  | 2.53%      | 0000000000000000
+341  | |--1.33%--GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+342  | |--0.53%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+343  | |--0.06%--GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+344  | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+345  | 0.30%      | std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+346  | |--0.27%--std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+347  | |          | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+348  | std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+349  | 0.24%      | operator delete(void*, unsigned long)
+350  | |          | long)
+351  | 0.16%      | int std::uniform_int_distribution<int>::operator()<std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+352  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+353  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+354  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+355  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+356  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+357  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+358  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+359  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+360  | |          | 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+361  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+362  | 0.14%      | operator delete(void*, unsigned long)@plt
+363  | |          | long)
+364  | 0.13%      | GeneticAlgorithm::generateInitialPopulation()
+365  | 0.10%      | memmove@plt
+366  | 0.10%      | operator new(unsigned long)@plt
+367  | 0.07%      | log@plt
+368  | 0.02%      | 0x0000000066373655
+369  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+370  | 0.02%      | 0x00000000e8edcfcc
+371  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+372  | 0.02%      | 0xc4e9324d050f4e52
+373  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+374  | 0.02%      | 0x738e11bf2abf0c5f
+375  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+376  | 0.02%      | 0x0035000000000000
+377  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+378  | 0.02%      | 0x00000000d8269a60
+379  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+380  | 0.02%      | 0x369c0ce764e10cec
+381  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+382  | 0.02%      | 0x0000000b00000006
+383  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+384  | 0.02%      | 0x000000008b3a48fe
+385  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+386  | 0.02%      | 0xddda000000000000
+387  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+388  | 0.02%      | 0xab385a98a2ad1d9c
+389  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+390  | 0.02%      | 0x2c00000000000000
+391  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+392  | 0.02%      | 0x000000007e4abb19
+393  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+394  | 0.02%      | 0x5d5534564801ed59
+395  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+396  | 0.02%      | 0x0000009300000062
+397  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+398  | 0.01%      | 0xe98284cc7aa52adb
+399  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+400  | 0.01%      | 0x0000003b00000061
+401  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+402  | 0.01%      | 0x0000000000007750
+403  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+404  | 0.01%      | 0x0000000012037ce8
+405  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+406  | 0.01%      | 0x000000004dcd740a
+407  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+408  | 0.01%      | 0x000000006cb8021a
+409  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+410  | 0.01%      | 0x00000000f2e312a5
+411  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+412  | 0.01%      | 0x0000000010b4186a
+413  | int        | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+414  | 0.01%      | 0x0000004f00000042
+415  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+416  | 0.01%      | 0x000000000f104694
+417  | std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+418  | 0.01%      | 0xc509899400000000
+419  | GeneticAlgorithm::tournamentSelection(std::vector<std::vector<bool, | std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)

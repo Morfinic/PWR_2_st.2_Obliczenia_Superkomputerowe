@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: crossover_swap_ranges_seq
+Data: Tue Jan 20 01:28:03 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 75.34%     | 0x0000000100000050
+2    | |--65.01%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | [clone ._omp_fn.1]
+4    | |          | long)
+5    | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+6    | |          | std::vector<bool, std::allocator<bool> >&)
+7    | |          | long)
+8    | |          | long)@plt
+9    | |--0.05%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+10   | --0.04%--int | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+11   | 75.34%     | 0x00005bd01939be10
+12   | |--65.01%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+13   | |          | [clone ._omp_fn.1]
+14   | |          | long)
+15   | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+16   | |          | std::vector<bool, std::allocator<bool> >&)
+17   | |          | long)
+18   | |          | long)@plt
+19   | |--0.05%--GeneticAlgorithm::crossover(std::vector<bool, | std::allocator<bool> >&)
+20   | --0.04%--int | 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&, std::uniform_int_distribution<int>::param_type const&) [clone .constprop.0] [clone .isra.0]
+21   | 75.34%     | 0x000000c8000003e8
+22   | |--65.01%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+23   | |          | [clone ._omp_fn.1]
