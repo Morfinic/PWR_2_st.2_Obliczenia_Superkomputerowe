@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: double_buffering_parallel
+Data: Tue Jan 20 12:54:10 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 50.69%     | 0x0000000100000050
+2    | |--39.30%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | tick_sched_handle
+4    | |          | |
+5    | |          | |--0.10%--update_process_times
+6    | |          | | |
+7    | |          | | |--0.08%--scheduler_tick
+8    | |          | | | |
+9    | |          | | | |--0.04%--task_tick_fair
+10   | |          | | | | |
+11   | |          | | | | |--0.02%--update_load_avg
+12   | |          | | | | | __update_load_avg_cfs_rq
+13   | |          | | | | |
+14   | |          | | | | --0.01%--update_curr
+15   | |          | | | |
+16   | |          | | | |--0.02%--trigger_load_balance
+17   | |          | | | |
+18   | |          | | | --0.01%--perf_event_task_tick
+19   | |          | | | perf_adjust_freq_unthr_context
+20   | |          | | |
+21   | |          | | --0.01%--account_user_time
+22   | |          | |
+23   | |          | --0.01%--account_process_tick

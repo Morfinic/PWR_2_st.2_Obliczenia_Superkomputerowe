@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: geometric_distribution
+Data: Tue Jan 20 12:38:58 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 68.44%     | 0x0000000100000050
+2    | |--59.80%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | |
+4    | |          | |--0.04%--perf_event_task_tick
+5    | |          | | perf_adjust_freq_unthr_context
+6    | |          | |
+7    | |          | --0.03%--trigger_load_balance
+8    | |          | nohz_balancer_kick
+9    | |          | housekeeping_cpumask
+10   | |          | [clone ._omp_fn.1]
+11   | |          | long)
+12   | |          | |
+13   | |          | |--0.62%--_int_malloc
+14   | |          | |
+15   | |          | --0.04%--alloc_perturb
+16   | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+17   | |          | std::vector<bool, std::allocator<bool> >&)
+18   | --0.03%--std::mersenne_twister_engine<unsigned | 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+19   | 68.44%     | 0x000058b41753de10
+20   | |--59.80%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+21   | |          | |
+22   | |          | |--0.04%--perf_event_task_tick
+23   | |          | | perf_adjust_freq_unthr_context

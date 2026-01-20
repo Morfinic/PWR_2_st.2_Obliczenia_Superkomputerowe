@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: double_buffering
+Data: Tue Jan 20 12:52:39 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 62.39%     | 0x0000000100000050
+2    | |--53.97%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | [clone ._omp_fn.1]
+4    | |          | |
+5    | |          | --0.04%--asm_sysvec_apic_timer_interrupt
+6    | |          | sysvec_apic_timer_interrupt
+7    | |          | native_apic_msr_eoi
+8    | |          | long)
+9    | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+10   | |          | long)@plt
+11   | |          | std::vector<bool, std::allocator<bool> >&)
+12   | 62.39%     | 0x00005693aaf0ae10
+13   | |--53.97%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+14   | |          | [clone ._omp_fn.1]
+15   | |          | |
+16   | |          | --0.04%--asm_sysvec_apic_timer_interrupt
+17   | |          | sysvec_apic_timer_interrupt
+18   | |          | native_apic_msr_eoi
+19   | |          | long)
+20   | |          | std::allocator<std::vector<bool, std::allocator<bool> > > >&, std::vector<int, std::allocator<int> >)
+21   | |          | long)@plt
+22   | |          | std::vector<bool, std::allocator<bool> >&)
+23   | 62.39%     | 0x000000c8000003e8

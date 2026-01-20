@@ -1,0 +1,28 @@
+RAPORT WYDAJNOŚCI - WERSJA: geometric_distribution_parallel
+Data: Tue Jan 20 12:39:56 AM UTC 2026
+-----------------------------------------------------------------
+LP.  | % CPU      | NAZWA FUNKCJI
+-----+------------+--------------------------------------------------
+1    | 53.75%     | 0x0000000100000050
+2    | |--43.23%--GeneticAlgorithm::solve(bool, | ._omp_fn.0]
+3    | |          | |
+4    | |          | |--0.05%--tick_nohz_highres_handler
+5    | |          | | |
+6    | |          | | |--0.03%--tick_sched_handle
+7    | |          | | | update_process_times
+8    | |          | | | |
+9    | |          | | | |--0.02%--scheduler_tick
+10   | |          | | | | task_tick_fair
+11   | |          | | | |
+12   | |          | | | --0.01%--perf_event_task_tick
+13   | |          | | |
+14   | |          | | --0.02%--tick_sched_do_timer
+15   | |          | | |
+16   | |          | | --0.01%--_raw_spin_lock
+17   | |          | |
+18   | |          | --0.02%--__remove_hrtimer
+19   | |          | timerqueue_del
+20   | |          | [clone ._omp_fn.1]
+21   | |          | |
+22   | |          | |--0.23%--_int_free_maybe_consolidate
+23   | |          | |

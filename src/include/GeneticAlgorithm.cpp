@@ -16,8 +16,6 @@ GeneticAlgorithm::GeneticAlgorithm(
     maxGenerations(maxGenerations),
     generator(std::random_device{}())
 {
-    // Optymalizacja: Kopiujemy dane do prostych wektorów int, 
-    // aby calculateFitness nie skakało po pamięci.
     this->capacity = knapsack.getCapacity();
     auto items = knapsack.getItems();
     this->itemWeights.reserve(items.size());
@@ -33,8 +31,10 @@ GeneticAlgorithm::GeneticAlgorithm(
 // P - Rozmiar populacji
 // N - Rozmiar problemu
 // T - Rozmiar turnieju
-// k - liczba wątków procesora
+// p - współczynnik mutacji
+// Złożoność całkowita: O(G * P * N)
 
+// O(P * N)
 std::vector<KnapsackGA::Solution> GeneticAlgorithm::generateInitialPopulation(){
     std::vector<KnapsackGA::Solution> population(this->populationSize);
     std::uniform_int_distribution<> boolDist(0, 1);
@@ -52,8 +52,8 @@ std::vector<KnapsackGA::Solution> GeneticAlgorithm::generateInitialPopulation(){
     return population;
 }
 
+// O(N)
 int GeneticAlgorithm::calculateFitness(KnapsackGA::Solution& chromosome){
-    // Zoptymalizowana wersja: operuje na lokalnych wektorach int
     int totalWeight = 0;
     int totalValue = 0;
 
@@ -72,9 +72,8 @@ int GeneticAlgorithm::calculateFitness(KnapsackGA::Solution& chromosome){
     return totalValue;
 }
 
+// O(T)
 KnapsackGA::Solution GeneticAlgorithm::tournamentSelection(std::vector<KnapsackGA::Solution>& population, std::vector<int> fitnesses){
-    // Używamy thread_local na wszelki wypadek, to nie szkodzi wersji single-thread,
-    // a zabezpiecza przed błędami w przyszłości.
     static thread_local std::mt19937 threadGen(std::random_device{}() + omp_get_thread_num());
     std::uniform_int_distribution<> dist(0, this->populationSize - 1);
     
@@ -92,6 +91,7 @@ KnapsackGA::Solution GeneticAlgorithm::tournamentSelection(std::vector<KnapsackG
     return population[bestIndex];
 }
 
+// O(N)
 std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::crossover(KnapsackGA::Solution& parent1, KnapsackGA::Solution& parent2){
     static thread_local std::mt19937 threadGen(std::random_device{}() + omp_get_thread_num());
     std::uniform_int_distribution<> dist(0, this->chromosomeLength - 1);
@@ -108,13 +108,17 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::crossove
     return {child1, child2};
 }
 
+// O(N * p)
 void GeneticAlgorithm::mutate(KnapsackGA::Solution& chromosome){
     static thread_local std::mt19937 threadGen(std::random_device{}() + omp_get_thread_num());
-    std::uniform_real_distribution<> dist(0.0, 1.0);
+    std::geometric_distribution<int> jumpDist(this->mutationRate);
     
-    for(int i = 0; i < this->chromosomeLength; i++){
-        if(dist(threadGen) < this->mutationRate){
-            chromosome[i] = !chromosome[i];
+    int index = 0;
+    while(index < this->chromosomeLength){
+        index += jumpDist(threadGen);
+        if(index < this->chromosomeLength){
+            chromosome[index] = !chromosome[index];
+            index++;
         }
     }
 }
@@ -122,31 +126,24 @@ void GeneticAlgorithm::mutate(KnapsackGA::Solution& chromosome){
 std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bool verbose, bool log, bool isParallel){
     std::vector<KnapsackGA::Solution> population = this->generateInitialPopulation();
     
-    // Alokujemy raz, używamy wielokrotnie
     std::vector<KnapsackGA::Solution> newPopulation(this->populationSize);
     std::vector<int> fitnesses(this->populationSize);
     std::vector<int> convergence;
 
-    // Inicjalizujemy czymkolwiek poprawnym, żeby uniknąć pustych wektorów
     KnapsackGA::Solution bestSolution = population[0];
     KnapsackGA::Solution bestLastGenSolution = population[0];
     int bestFitness = -1;
 
     for(int g = 0; g < this->maxGenerations; g++){
         
-        // ZMIANA: -1 zamiast 0. Jeśli wszyscy mają fitness 0 (przepełnienie),
-        // to i tak musimy kogoś wybrać jako "najlepszego z generacji", 
-        // żeby nie przypisać pustego wektora.
         int bestGenFitness = -1;
-        
-        // Zabezpieczenie: domyślnie bierzemy pierwszego, żeby wektor nigdy nie był pusty
         KnapsackGA::Solution bestGenSolution = population[0];
 
+        // O(P * N)
         #pragma omp parallel for if(isParallel)
         for(int i = 0; i < this->populationSize; i++){
             fitnesses[i] = this->calculateFitness(population[i]);
             
-            // Critical jest potrzebny tylko przy włączonym parallel
             if (isParallel) {
                 if(fitnesses[i] > bestGenFitness){
                     #pragma omp critical
@@ -158,7 +155,6 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
                     }
                 }
             } else {
-                // Wersja Single Thread (bez narzutu critical)
                 if(fitnesses[i] > bestGenFitness){
                     bestGenFitness = fitnesses[i];
                     bestGenSolution = population[i];
@@ -173,32 +169,29 @@ std::pair<KnapsackGA::Solution, KnapsackGA::Solution> GeneticAlgorithm::solve(bo
 
         newPopulation[0] = bestGenSolution;
 
-        // Działa P/2 razy
+        // Pętla Ewolucji: P/2 iteracji
         #pragma omp parallel for if(isParallel)
         for(int i = 1; i < this->populationSize; i += 2){
-            // Działa T razy
+            // Selekcja 2 * O(T)
             KnapsackGA::Solution parent1 = this->tournamentSelection(population, fitnesses);
-            // Działa T razy
             KnapsackGA::Solution parent2 = this->tournamentSelection(population, fitnesses);
-            // 2*O(T)
 
-            // O(N)
+            // Krzyżowanie O(N)
             auto [child1, child2] = this->crossover(parent1, parent2);
 
-            // N
+            // Mutacja 2 * O(N * p)
             mutate(child1);
-            // N
             mutate(child2);
-            // mutate - 2*O(N)
 
             newPopulation[i] = child1;
             if(i + 1 < this->populationSize){
                 newPopulation[i+1] = child2;
             }
         }
-        // Tworzenie nowej Generacji
         
-        population = newPopulation;
+        // Double buffering O(1)
+        std::swap(population, newPopulation);
+        
         bestLastGenSolution = bestGenSolution;
         convergence.push_back(bestGenFitness);
     }
