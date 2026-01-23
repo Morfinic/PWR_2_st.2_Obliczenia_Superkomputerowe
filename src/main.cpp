@@ -185,7 +185,7 @@ void runCudaExperiment() {
     std::ofstream csvFile("wyniki_Cuda.csv");
     csvFile << "N,Capacity,AvgTime_s\n"; // Nagłówek CSV
 
-    std::vector<int> itemSizes = {200, 500, 1000, 2000, 5000};
+    std::vector<int> itemSizes = {200, 500, 1000, 2000, 5000, 10000, 15000, 20000, 25000};
 
     // Tylko 1 wątek
     omp_set_num_threads(1);
