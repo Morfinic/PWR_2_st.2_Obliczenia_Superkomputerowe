@@ -4,13 +4,16 @@
 #include <iomanip>
 #include <fstream> // Do zapisu plików
 #include <omp.h>
+#include <c++/12/vector>
+
 #include "include/GeneticAlgorithm.h"
+#include "include/GpuSolver.h"
 #include "include/Knapsack.h"
 
 // =============================================================
 // KONFIGURACJA EKSPERYMENTÓW
 // =============================================================
-const int NUM_TRIALS = 100; // Zwiększone do 100 zgodnie z życzeniem
+const int NUM_TRIALS = 100;
 
 // =============================================================
 // FUNKCJA POMIAROWA
@@ -20,7 +23,7 @@ double measureSingleRun(int numItems, int capacity, bool isParallel) {
     int maxWeight = 50;
     int maxValue = 100;
     
-    // 2. PARAMETRY ALGORYTMU (Wersja "Ciężka" - zgodna z Twoją bazą)
+    // 2. PARAMETRY ALGORYTMU
     int popSize = 1000;       
     double mutRate = 0.01;
     int tourSize = 5;
@@ -41,6 +44,46 @@ double measureSingleRun(int numItems, int capacity, bool isParallel) {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     
+    return elapsed.count(); // Czas w sekundach
+}
+
+double measureSingleCudaRun(int numItems, int capacity) {
+    // 1. Parametry problemu
+    int maxWeight = 50;
+    int maxValue = 100;
+
+    // 2. PARAMETRY ALGORYTMU
+    int popSize = 1000;
+    double mutRate = 0.01;
+    int tourSize = 5;
+    int generations = 500;
+
+    Knapsack knapsack = Knapsack::generateRandom(numItems, maxWeight, maxValue, capacity);
+
+    std::vector<int> weights;
+    std::vector<int> values;
+
+    const auto &items = knapsack.getItems();
+    for (const auto &item : items) {
+        weights.push_back(item.weight);
+        values.push_back(item.value);
+    }
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    GpuResult res = GpuSolver::solveKnapsackGPU(
+        weights,
+        values,
+        capacity,
+        popSize,
+        mutRate,
+        tourSize,
+        generations
+    );
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+
     return elapsed.count(); // Czas w sekundach
 }
 
@@ -67,7 +110,7 @@ void runSequentialScalabilityExp() {
         double totalTime = 0.0;
         for (int i = 0; i < NUM_TRIALS; i++) {
             totalTime += measureSingleRun(n, capacity, false);
-            // Pasek postępu co 10 prób, żebyś widział że działa
+            // Pasek postępu co 10 prób
             if (i % 20 == 0) std::cout << "." << std::flush;
         }
         double avgTime = totalTime / NUM_TRIALS;
@@ -132,13 +175,48 @@ void runParallelScalingExp() {
     std::cout << "Wyniki zapisano do: wyniki_rownolegle.csv\n\n";
 }
 
+// =============================================================
+// EKSPERYMENT 2: CUDA (Zależność od N)
+// =============================================================
+void runCudaExperiment() {
+    std::cout << "=== EKSPERYMENT 3: CUDA ===" << std::endl;
+
+    // Otwarcie pliku CSV
+    std::ofstream csvFile("wyniki_Cuda.csv");
+    csvFile << "N,Capacity,AvgTime_s\n"; // Nagłówek CSV
+
+    std::vector<int> itemSizes = {200, 500, 1000, 2000, 5000};
+
+    // Tylko 1 wątek
+    omp_set_num_threads(1);
+
+    for (int n : itemSizes) {
+        int capacity = n * 5;
+
+        std::cout << "Testowanie N=" << n << " (Wait...)" << std::flush;
+
+        double totalTime = 0.0;
+        for (int i = 0; i < NUM_TRIALS; i++) {
+            totalTime += measureSingleCudaRun(n, capacity);
+            // Pasek postępu co 10 prób
+            if (i % 20 == 0) std::cout << "." << std::flush;
+        }
+        double avgTime = totalTime / NUM_TRIALS;
+
+        // Wypisanie na ekran
+        std::cout << " Done. Sredni czas: " << avgTime << " s" << std::endl;
+
+        // Zapis do pliku
+        csvFile << n << "," << capacity << "," << avgTime << "\n";
+    }
+    csvFile.close();
+    std::cout << "Wyniki zapisano do: wyniki_cuda.csv\n\n";
+}
+
 int main(int argc, char* argv[]) {
-    std::cout << "Rozpoczynam testy (100 powtorzen, Heavy Workload)...\n";
-    std::cout << "To moze potrwac kilka minut.\n\n";
+    // runSequentialScalabilityExp();
+    // runParallelScalingExp();
+    runCudaExperiment();
 
-    runSequentialScalabilityExp();
-    runParallelScalingExp();
-
-    std::cout << "Koniec wszystkich testow." << std::endl;
     return 0;
 }
